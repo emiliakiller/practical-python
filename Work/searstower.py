@@ -3,7 +3,7 @@
 # Dollar bill thickness: 0.11mm = 0.00011m
 # assuming additive doubling (ie. adding twice as much to the pile each day):
 
-def main():
+def main(additive):
     bill_height = 0.11 * 0.001 # mm converted to metres
     target_height = 442 # in metres
     bill_count = 0
@@ -11,11 +11,15 @@ def main():
     number_of_days = 0
 
     while(current_pile_height <= target_height):
-        bill_count += pow(2, number_of_days)
+        if additive:
+            bill_count += pow(2, number_of_days)
+        else:
+            bill_count = pow(2, number_of_days)
+
         current_pile_height = bill_height * bill_count
         number_of_days += 1
         print(f"Day {number_of_days}: {bill_count} bills, {current_pile_height}m")
 
     return number_of_days
 
-print(main())
+print(main(False))
