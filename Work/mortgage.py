@@ -23,14 +23,23 @@ def main(mortgage_value, annual_interest_rate, monthly_payment, additional_payme
     month_count = 0
 
     while mortgage_value > 0:
-        month_count += 1
+
         mortgage_value *= (1+annual_interest_rate/12)
         mortgage_value -= monthly_payment
         total_paid += monthly_payment
+
         if month_count >= additional_payment_start_month and month_count < additional_payment_end_month:
             mortgage_value -= additional_payment
             total_paid += additional_payment
+
+        if mortgage_value < 0:
+            total_paid += mortgage_value
+            mortgage_value = 0
+
+        month_count += 1
+
         print(f"{month_count} {total_paid} {mortgage_value}")
+
     return total_paid, month_count
 
 result = main(500000, 0.05, 2684.11, 1000, 60, 108)
