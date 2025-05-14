@@ -6,7 +6,7 @@
 def portfolio_cost(filename):
     total_cost = 0
 
-    with open("Work/Data/portfolio.csv", "rt") as f:
+    with open(filename, "rt") as f:
        _ = next(f).split(',')
        for line in f:
            row = line.split(',')
