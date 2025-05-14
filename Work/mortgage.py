@@ -15,12 +15,22 @@
 # r → Monthly Interest Rate (Annual Interest Rate ÷ 12)
 # n → Number of Payments (Borrowing Term in Years × 12)
 
-def main(mortgage_value, mortgage_duration, annual_interest_rate, monthly_payment):
+# Suppose Dave pays an extra $1000/month for the first 12 months of the mortgage?
+# Modify the program to incorporate this extra payment and have it print the total amount paid along with the number of months required.
+
+def main(mortgage_value, annual_interest_rate, monthly_payment, additional_payment, additional_payment_duration_months):
     total_paid = 0
+    month_count = 0
+
     while mortgage_value > 0:
         mortgage_value *= (1+annual_interest_rate/12)
         mortgage_value -= monthly_payment
         total_paid += monthly_payment
-    return total_paid
+        if month_count < additional_payment_duration_months:
+            mortgage_value -= additional_payment
+            total_paid += additional_payment
+        month_count += 1
+    return total_paid, month_count
 
-print(main(500000, 30, 0.05, 2684.11))
+result = main(500000, 0.05, 2684.11, 1000, 12)
+print(f"${round(result[0], 2)} over {result[1]} months.")
