@@ -23,12 +23,32 @@ def read_prices(filename):
         rows = csv.reader(f)
         next(rows)
         for row in rows:
-            print(row)
             try:
                 prices[row[0]] = float(row[1])
             except ValueError:
-                print(f"Couldn't parse line {row}")
+                print(f"Couldn't parse line: {row}")
             except IndexError:
-                print(f"Missing data in row {row}")
+                print(f"Missing data in row: {row}")
 
     return prices
+
+# Tie all of this work together by adding a few additional statements to your report.py program that computes gain/loss. These statements should take the list of stocks in Exercise 2.5 and the dictionary of prices in Exercise 2.6 and compute the current value of the portfolio along with the gain/loss.
+
+def calculate_delta(portfolio, prices):
+    portfolio_value = 0
+    portfolio_change = 0
+    for entry in portfolio:
+        if entry["name"] in prices:
+            portfolio_value += prices[entry["name"]] * entry["shares"]
+            portfolio_change += (prices[entry["name"]] - entry["price"]) * entry["shares"]
+        else:
+            portfolio_value += entry["price"] * entry["shares"]
+    return portfolio_value, portfolio_change
+
+def main():
+    portfolio = read_portfolio("Work/Data/portfolio.csv")
+    prices = read_prices("Work/Data/prices.csv")
+    value,change = calculate_delta(portfolio, prices)
+    print(value, change)
+
+main()
