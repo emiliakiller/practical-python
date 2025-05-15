@@ -36,18 +36,20 @@ def read_prices(filename):
 def make_report(portfolio, prices):
     report = []
     for entry in portfolio:
-        report.append({
-            'name': entry["name"],
-            'shares': entry["shares"],
-            'price': prices[entry["name"]],
-            'change': prices[entry["name"]] - entry["price"]
-        })
+        temp = (
+            entry["name"],
+            entry["shares"],
+            prices[entry["name"]],
+            prices[entry["name"]] - entry["price"]
+        )
+        report.append(temp)
     return report
 
 def main():
     portfolio = read_portfolio("Work/Data/portfolio.csv")
     prices = read_prices("Work/Data/prices.csv")
     report = make_report(portfolio, prices)
-    print(report)
+    for name, shares, price, change in report:
+        print(f"{name:>10s} {shares:>10d} {price:>10.2f} {change:>10.2f}")
 
 main()
