@@ -1,5 +1,5 @@
 # report.py
-# Using this code as a rough guide, create a new file report.py. In that file, define a function read_portfolio(filename) that opens a given portfolio file and reads it into a list of tuples. To do this, you’re going to make a few minor modifications to the above code.
+# Take the function you wrote in Exercise 2.4 and modify to represent each stock in the portfolio with a dictionary instead of a tuple. In this dictionary use the field names of “name”, “shares”, and “price” to represent the different columns in the input file.
 # Exercise 2.4
 
 import csv, sys
@@ -12,7 +12,7 @@ def read_portfolio(filename):
         rows = csv.reader(f)
         headers = next(rows)
         for row in rows:
-            holding = (row[0], int(row[1]), float(row[2]))
+            holding = {"name": row[0], "shares": int(row[1]), "price": float(row[2])}
             portfolio.append(holding)
     return portfolio
 
