@@ -1,8 +1,8 @@
 # report.py
-# Take the function you wrote in Exercise 2.4 and modify to represent each stock in the portfolio with a dictionary instead of a tuple. In this dictionary use the field names of “name”, “shares”, and “price” to represent the different columns in the input file.
+# Write a function read_prices(filename) that reads a set of prices such as this into a dictionary where the keys of the dictionary are the stock names and the values in the dictionary are the stock prices.
 # Exercise 2.4
 
-import csv, sys
+import csv
 
 def read_portfolio(filename):
     '''Creates a list of tuples detailing a portfolio'''
@@ -16,10 +16,19 @@ def read_portfolio(filename):
             portfolio.append(holding)
     return portfolio
 
-if len(sys.argv) == 2:
-    filename = sys.argv[1]
-else:
-    filename = 'Work/Data/portfolio.csv'
+def read_prices(filename):
+    '''Reads a list of prices and stores them in a dictionary of ticker symbols'''
+    prices = {}
+    with open(filename, "rt") as f:
+        rows = csv.reader(f)
+        next(rows)
+        for row in rows:
+            print(row)
+            try:
+                prices[row[0]] = float(row[1])
+            except ValueError:
+                print(f"Couldn't parse line {row}")
+            except IndexError:
+                print(f"Missing data in row {row}")
 
-portfolio = read_portfolio(filename)
-print(f"Portfolio: {portfolio}")
+    return prices
