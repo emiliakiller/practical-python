@@ -8,6 +8,7 @@ import sys
 records = []
 
 def portfolio_cost(filename):
+    '''Calculates the total value of a portfolio from a csv file representing the portfolio'''
     total_cost = 0
 
     with open(filename, "rt") as f:
