@@ -2,6 +2,8 @@
 # Write a function read_prices(filename) that reads a set of prices such as this into a dictionary where the keys of the dictionary are the stock names and the values in the dictionary are the stock prices.
 # Exercise 2.4
 
+# Modify the report.py program you wrote in Section 2.3 so that it uses the same technique to pick out column headers.
+
 import csv
 
 def read_portfolio(filename):
@@ -11,9 +13,9 @@ def read_portfolio(filename):
     with open(filename, 'rt') as f:
         rows = csv.reader(f)
         headers = next(rows)
-        for row in rows:
-            holding = {"name": row[0], "shares": int(row[1]), "price": float(row[2])}
-            portfolio.append(holding)
+        for rowno, row in enumerate(rows, 1):
+            record = dict(zip(headers, row))
+            portfolio.append(record)
     return portfolio
 
 def read_prices(filename):
@@ -21,13 +23,13 @@ def read_prices(filename):
     prices = {}
     with open(filename, "rt") as f:
         rows = csv.reader(f)
-        for row in rows:
+        for rowno, row in enumerate(rows, 1):
             try:
                 prices[row[0]] = float(row[1])
             except ValueError:
-                print(f"Couldn't parse line: {row}")
+                print(f"Couldn't parse line {rowno} of {filename}")
             except IndexError:
-                print(f"Missing data in row: {row}")
+                print(f"Missing data in row {rowno} of {filename}")
 
     return prices
 
@@ -38,15 +40,15 @@ def make_report(portfolio, prices):
     for entry in portfolio:
         temp = (
             entry["name"],
-            entry["shares"],
-            prices[entry["name"]],
-            prices[entry["name"]] - entry["price"]
+            int(entry["shares"]),
+            float(prices[entry["name"]]),
+            float(prices[entry["name"]]) - float(entry["price"])
         )
         report.append(temp)
     return report
 
 def main():
-    portfolio = read_portfolio("Work/Data/portfolio.csv")
+    portfolio = read_portfolio("Work/Data/portfoliodate.csv")
     prices = read_prices("Work/Data/prices.csv")
     report = make_report(portfolio, prices)
 
