@@ -6,7 +6,7 @@
 
 import csv
 
-def read_portfolio(filename):
+def read_portfolio(filename:str) -> list:
     '''Creates a list of tuples detailing a portfolio'''
     portfolio = []
 
@@ -18,7 +18,7 @@ def read_portfolio(filename):
             portfolio.append(record)
     return portfolio
 
-def read_prices(filename):
+def read_prices(filename:str) -> dict:
     '''Reads a list of prices and stores them in a dictionary of ticker symbols'''
     prices = {}
     with open(filename, "rt") as f:
@@ -35,7 +35,10 @@ def read_prices(filename):
 
 # Tie all of this work together by adding a few additional statements to your report.py program that computes gain/loss. These statements should take the list of stocks in Exercise 2.5 and the dictionary of prices in Exercise 2.6 and compute the current value of the portfolio along with the gain/loss.
 
-def make_report(portfolio, prices):
+def make_report(portfolio:list, prices:dict) -> list:
+    '''
+    Takes in a list of records from a portfolio, updates the price, calculates the change in the price, and returns a report in the form of a list
+    '''
     report = []
     for entry in portfolio:
         temp = (
@@ -47,9 +50,12 @@ def make_report(portfolio, prices):
         report.append(temp)
     return report
 
-def main():
-    portfolio = read_portfolio("Work/Data/portfoliodate.csv")
-    prices = read_prices("Work/Data/prices.csv")
+def portfolio_report(portfolio_filename:str, price_filename:str) -> None:
+    '''
+    Takes in the filenames of a portfolio and a pricelist, and compiles and prints a report of the information
+    '''
+    portfolio = read_portfolio(portfolio_filename)
+    prices = read_prices(price_filename)
     report = make_report(portfolio, prices)
 
     headers = ('Name', 'Shares', 'Price($)', 'Change')
@@ -59,4 +65,4 @@ def main():
     for name, shares, price, change in report:
         print(f"{name:>10s} {shares:>10d} {price:>10.2f} {change:>10.2f}")
 
-main()
+portfolio_report("Work/Data/portfoliodate.csv","Work/Data/prices.csv")
