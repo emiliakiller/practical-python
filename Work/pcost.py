@@ -14,20 +14,20 @@ def portfolio_cost(filename):
     with open(filename, "rt") as f:
         rows = csv.reader(f)
         next(rows)
-        for row in rows:
-
+        # Using enumerate(), modify your pcost.py program so that it prints a line number with the warning message when it encounters bad input.
+        for rowno, row in enumerate(rows,1):
             try:
                 records.append((row[0], int(row[1]), float(row[2])))
                 total_cost += (int(row[1])*float(row[2]))
             except ValueError:
-                print(f"Couldn't parse line {row}")
+                print(f"Row {rowno}: Couldn't convert: {row}")
 
     return total_cost
 
 if len(sys.argv) == 2:
     filename = sys.argv[1]
 else:
-    filename = 'Work/Data/portfolio.csv'
+    filename = 'Work/Data/missing.csv'
 
 cost = portfolio_cost(filename)
 print('Total cost:', cost)
