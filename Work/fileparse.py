@@ -4,7 +4,7 @@
 #
 import csv
 
-def parse_csv(filename:str, select: list | None=None, types: list | None=None, has_headers:bool=True, delimiter:str=",", silence_errors=False):
+def parse_csv(filename:str, select: list | None=None, types: list | None=None, has_headers:bool=True, delimiter:str=",", silence_errors=False) -> list[dict|tuple]:
     '''
     Parse a CSV file into a list of records
     '''

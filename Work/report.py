@@ -4,33 +4,16 @@
 
 # Modify the report.py program you wrote in Section 2.3 so that it uses the same technique to pick out column headers.
 
-import csv
+from fileparse import parse_csv
 
 def read_portfolio(filename:str) -> list:
     '''Creates a list of tuples detailing a portfolio'''
-    portfolio = []
-
-    with open(filename, 'rt') as f:
-        rows = csv.reader(f)
-        headers = next(rows)
-        for rowno, row in enumerate(rows, 1):
-            record = dict(zip(headers, row))
-            portfolio.append(record)
+    portfolio = parse_csv(filename, select=['name', 'shares', 'price'], types=[str,int,float])
     return portfolio
 
 def read_prices(filename:str) -> dict:
     '''Reads a list of prices and stores them in a dictionary of ticker symbols'''
-    prices = {}
-    with open(filename, "rt") as f:
-        rows = csv.reader(f)
-        for rowno, row in enumerate(rows, 1):
-            try:
-                prices[row[0]] = float(row[1])
-            except ValueError:
-                print(f"Couldn't parse line {rowno} of {filename}")
-            except IndexError:
-                print(f"Missing data in row {rowno} of {filename}")
-
+    prices = {name:price for name,price in parse_csv(filename, types=[str,float], has_headers=False)}
     return prices
 
 # Tie all of this work together by adding a few additional statements to your report.py program that computes gain/loss. These statements should take the list of stocks in Exercise 2.5 and the dictionary of prices in Exercise 2.6 and compute the current value of the portfolio along with the gain/loss.
@@ -43,9 +26,9 @@ def make_report(portfolio:list, prices:dict) -> list:
     for entry in portfolio:
         temp = (
             entry["name"],
-            int(entry["shares"]),
-            float(prices[entry["name"]]),
-            float(prices[entry["name"]]) - float(entry["price"])
+            entry["shares"],
+            prices[entry["name"]],
+            prices[entry["name"]] - entry["price"]
         )
         report.append(temp)
     return report
