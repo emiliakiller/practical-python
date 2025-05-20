@@ -48,4 +48,4 @@ def portfolio_report(portfolio_filename:str, price_filename:str) -> None:
     for name, shares, price, change in report:
         print(f"{name:>10s} {shares:>10d} {price:>10.2f} {change:>10.2f}")
 
-portfolio_report("Work/Data/portfoliodate.csv","Work/Data/prices.csv")
+# portfolio_report("Work/Data/portfoliodate.csv","Work/Data/prices.csv")
